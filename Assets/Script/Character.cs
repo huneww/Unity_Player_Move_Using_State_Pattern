@@ -37,9 +37,16 @@ public class Character : MonoBehaviour
     // 캐릭터 상태 열거형 변수
     //private STATE curState;
     // 현재 상태 스크립트 저장 변수
+    [SerializeField]
     private IState state;
 
     public float speed = 5f;
+
+    // 현재 받고있는 디버프 리스트
+    public List<IDeBuff> deBuff = new List<IDeBuff>();
+    // 디버프 표시 텍스트
+    [SerializeField]
+    private Text deBuffText;
 
     void Start()
     {
@@ -59,6 +66,8 @@ public class Character : MonoBehaviour
     {
         // 현재 상태에 있는 Action함수를 계속 호출
         state.Action();
+        // 현재 디버프 출력
+        PrintDeBuff();
     }
 
     // 컴포넌트를 오브젝트에 추가하위해서
@@ -136,6 +145,26 @@ public class Character : MonoBehaviour
                 stateText.text = "State : Attack1";
                 break;
         }
+    }
+
+    // 현재 받고있는 디버프를 표시
+    private void PrintDeBuff()
+    {
+        if (deBuff.Count <= 0)
+        {
+            deBuffText.text = "DeBuff : ";
+            return;
+        }
+
+        IDeBuff[] values = deBuff.ToArray();
+
+        deBuffText.text = "DeBuff : ";
+
+        for (int i = 0; i < values.Length; i++)
+        {
+            deBuffText.text += values[i].GetType() + " ";
+        }
+
     }
 
 }
